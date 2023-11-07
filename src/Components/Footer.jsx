@@ -1,5 +1,6 @@
 import React from 'react'
 import {FaRegEnvelope} from 'react-icons/fa'
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     const navigation = {
@@ -82,13 +83,13 @@ const Footer = () => {
     {/* <!-- Footer Content --> */}
     <div class="flex flex-col justify-between md:flex-row">
       <h2 class="mb-4 w-full max-w-[560px] text-3xl font-extrabold text-black md:text-5xl">
-        <span class="text-red-800">Lightning fast</span> Webflow Dev made easy
+        <span class="text-red-800">The VIN Report</span> 
       </h2>
       <div class="mt-8 flex-none md:mt-0">
         
         <div class="mb-4 flex max-w-[272px] items-start">
          <FaRegEnvelope color='#000' size={24} class="mr-3 inline-block"/>
-          <p class="text-black">support@flowspark.co</p>
+          <p class="text-black">info@thevinreport.com</p>
         </div>
       </div>
     </div>
@@ -97,11 +98,13 @@ const Footer = () => {
     {/* <!-- Footer Footnotes --> */}
     <div class="flex flex-col items-center justify-between md:flex-row">
       <div class="mb-4 text-center font-semibold sm:text-center md:mb-0">
-        <a href="#" class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">About</a>
-        <a href="#" class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Features</a>
-        <a href="#" class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Works</a>
-        <a href="#" class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Support</a>
-        <a href="#" class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Help</a>
+        <Link to={'/'} class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Home</Link>
+        <Link to={'/car-report'} class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Car Report</Link>
+        <Link to={'/heavy-duty-truck-report'} class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Heavy Duty Truck Report</Link>
+        <Link to={'/motor-bikes-reports'} class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Motor Bikes Report</Link>
+        <Link to={'/about'} class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">About us</Link>
+        <Link to={'/contact'} class="inline-block py-1.5 pr-6 text-[#636262] transition hover:text-red-900 sm:py-2 sm:pr-6 lg:pr-12">Contact us</Link>
+       
       </div>
       <p class="text-[#636262]">© Copyright 2021. All rights reserved.</p>
     </div>

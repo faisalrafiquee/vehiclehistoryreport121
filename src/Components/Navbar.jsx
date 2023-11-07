@@ -17,9 +17,9 @@ const Navbar = () => {
         { name: "Car Report", href: "/car-report",current: pathname == '/car-report' ? true : false },
         { name: "Heavy Duty Truck Report", href: "/heavy-duty-truck-report", current: pathname == '/heavy-duty-truck-report' ? true : false },
         { name: "Motor Bikes Report", href: "/motor-bikes-reports", current: pathname == '/motor-bikes-reports' ? true : false },
-        { name: "About us", href: "#", current: false },
+        { name: "About us", href: "/about", current: false },
         // { name: "Review of reports", href: "/reviews-of-reports", current: pathname == '/reviews-of-reports' ? true : false },
-        { name: "Contact us", href: "#", current:false },
+        { name: "Contact us", href: "/contact", current:false },
       
       ];
   return (
@@ -43,12 +43,12 @@ const Navbar = () => {
               <div className="flex-shrink-0 flex items-center">
                 <img
                   className="block lg:hidden h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+                  src="assets/images/logo.png"
                   alt="Workflow"
                 />
                 <img
                   className="hidden lg:block h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
+                  src="assets/images/logo.png"
                   alt="Workflow"
                 />
               </div>
@@ -79,10 +79,10 @@ const Navbar = () => {
         <Disclosure.Panel className="sm:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navigation.map((item) => (
-              <Disclosure.Button
+              <Link
                 key={item.name}
                 as="a"
-                href={item.href}
+                to={item.href}
                 className={classNames(
                   item.current
                     ? "bg-gray-900 text-white"
@@ -92,7 +92,7 @@ const Navbar = () => {
                 aria-current={item.current ? "page" : undefined}
               >
                 {item.name}
-              </Disclosure.Button>
+              </Link>
             ))}
           </div>
         </Disclosure.Panel>

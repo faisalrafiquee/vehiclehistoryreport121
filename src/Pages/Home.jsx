@@ -1,4 +1,4 @@
-import React, { useState ,useRef } from "react";
+import React, { useState ,useRef, useEffect } from "react";
 import SwiperHero from "../Components/SliderHero";
 import {
   FaCarCrash,
@@ -76,7 +76,10 @@ const Home = () => {
       imageSrc: <FaListAlt color="#000" size={50} />,
     },
   ];
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  
+  }, []);
   const targetDivRef = useRef(null);
 
   const handleButtonClick = () => {
@@ -425,9 +428,7 @@ const Home = () => {
                 />
               </div>
               <p class="text-[#647084]">
-                “Lorem ipsum dolor sit amet, &nbsp;elit ut aliquam, purus sit
-                amet luctus venenatis elit ut aliquam, purus sit amet luctus
-                venenatis"
+                “The vehicle inspection report service has truly revolutionized our operations. It stands as an absolute game-changer in the way we manage compliance, and its impact on our overall efficiency has been nothing short of remarkable."
               </p>
               <div class="flex">
                 <img
@@ -436,8 +437,8 @@ const Home = () => {
                   class="mr-4 h-16 w-16"
                 />
                 <div class="flex flex-col">
-                  <h6 class="font-bold text-black">Laila Bahar</h6>
-                  <p class="text-sm text-[#636262]">Designer</p>
+                  <h6 class="font-bold text-black">Lara smith</h6>
+                  <p class="text-sm text-[#636262]">Report Verified Customer</p>
                 </div>
               </div>
             </li>
@@ -470,9 +471,7 @@ const Home = () => {
                 />
               </div>
               <p class="text-[#647084]">
-                “Lorem ipsum dolor sit amet, &nbsp;elit ut aliquam, purus sit
-                amet luctus venenatis elit ut aliquam, purus sit amet luctus
-                venenatis"
+                “I simply can't envision overseeing our fleet without this invaluable service. It streamlines the inspection process and ensures our vehicles operate seamlessly. I wholeheartedly recommend it!"
               </p>
               <div class="flex">
                 <img
@@ -481,8 +480,8 @@ const Home = () => {
                   class="mr-4 h-16 w-16"
                 />
                 <div class="flex flex-col">
-                  <h6 class="font-bold text-black">Laila Bahar</h6>
-                  <p class="text-sm text-[#636262]">Designer</p>
+                  <h6 class="font-bold text-black">Adams Addison </h6>
+                  <p class="text-sm text-[#636262]">Report Verified Customer</p>
                 </div>
               </div>
             </li>
@@ -515,9 +514,7 @@ const Home = () => {
                 />
               </div>
               <p class="text-[#647084]">
-                “Lorem ipsum dolor sit amet, &nbsp;elit ut aliquam, purus sit
-                amet luctus venenatis elit ut aliquam, purus sit amet luctus
-                venenatis"
+                “The vehicle inspection report service has utterly transformed our maintenance process. It operates with remarkable efficiency and precision, and it has made a substantial contribution to enhancing our vehicle safety standards."
               </p>
               <div class="flex">
                 <img
@@ -526,8 +523,8 @@ const Home = () => {
                   class="mr-4 h-16 w-16"
                 />
                 <div class="flex flex-col">
-                  <h6 class="text-base font-bold text-black">Laila Bahar</h6>
-                  <p class="text-sm text-[#636262]">Designer</p>
+                  <h6 class="text-base font-bold text-black">Sophia Davis</h6>
+                  <p class="text-sm text-[#636262]">Report Verified Customer</p>
                 </div>
               </div>
             </li>

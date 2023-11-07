@@ -1,6 +1,7 @@
-import React,{useRef} from 'react'
+import React,{useEffect, useRef} from 'react'
 import InnerHero from '../Components/InnerHero'
 import InnerPricing from '../Components/InnerPricing'
+
 const BikeReport = () => {
   const targetDivRef = useRef(null);
 
@@ -10,12 +11,17 @@ const BikeReport = () => {
       targetDivRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  
+  }, []);
   return (
     <>
     <InnerHero
       id={1}
       title="It's always a wise choice to have a bike thoroughly inspected before making a purchase."
-      description="To verify the history of a truck imported from the United States, Vingator.com is your trusted source. They are known for their reliability in gathering accurate information about trucks through their VIN-based service for a fixed fee. Their reports are comprehensive, and the process is simple, quick, and, most importantly, highly effective in providing the information you need to make an informed decision."
+      description="To verify the history of a bike imported from the United States, you can rely on thevinreport.com, a trusted company that specializes in gathering accurate information based on a bike's VIN for a fixed fee. They provide a comprehensive report that is not only simple and quick but, most importantly, highly effective in providing you with the information you need to make an informed decision."
       link="hahha"
       btnTitle="Get Report"
       imgPath={"assets/images/bike-2.jpg"}

@@ -1,6 +1,7 @@
-import React,{useRef} from 'react'
+import React,{useEffect, useRef} from 'react'
 import InnerHero from '../Components/InnerHero'
 import InnerPricing from '../Components/InnerPricing'
+
 
 const CarReport = () => {
   const targetDivRef = useRef(null);
@@ -11,12 +12,16 @@ const CarReport = () => {
       targetDivRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  
+  }, []);
   return (
     <>
     <InnerHero
         id={1}
         title="Always get a car examined before purchasing it."
-        description="How can I verify the history of a car imported from the United States? Vingator.com is the most dependable company for gathering correct information on cars by VIN for a fixed charge and providing a thorough report. Simple, quick, and, most importantly, effective."
+        description="How can I verify the history of a car imported from the United States? thevinreport.com is the most dependable company for gathering correct information on cars by VIN for a fixed charge and providing a thorough report. Simple, quick, and, most importantly, effective."
         link="hahha"
         btnTitle="Get Report"
         imgPath={'assets/images/car-1.jpg'}
