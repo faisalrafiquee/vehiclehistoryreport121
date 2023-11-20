@@ -6,6 +6,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/outline";
 import Loader from "../Components/Loader";
 import { PayPalButton } from "react-paypal-button-v2";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import {
   useLocation,
   useNavigate,
@@ -20,6 +21,53 @@ const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [modalLoader, setModalLoader] = useState(0);
+
+  const [show, setShow] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
+  const [orderID, setOrderID] = useState(false);
+
+  const createOrder = (data, actions) => {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            description: "Sunflower",
+            amount: {
+              currency_code: "USD",
+              value: 20,
+            },
+          },
+        ],
+      })
+      .then((orderID) => {
+        setOrderID(orderID);
+        return orderID;
+      });
+  };
+
+  // check Approval
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(function (details) {
+      const { payer } = details;
+      setSuccess(true);
+    });
+  };
+
+  //capture likely error
+  const onError = (data, actions) => {
+    setErrorMessage("An Error occured with your payment ");
+  };
+
+  useEffect(() => {
+    if (success) {
+      alert("Payment successful!!");
+      console.log("Order successful . Your order id is--", orderID);
+    }
+  }, [success]);
+
+
+
   const navigate = useNavigate();
   const addPaypalScript = () => {
     if (window.paypal) {
@@ -37,7 +85,7 @@ const SignUpForm = () => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    addPaypalScript();
+    // addPaypalScript();
   }, []);
   const location = useLocation();
   let pakage = location.state?.route;
@@ -463,21 +511,30 @@ const SignUpForm = () => {
                   </div>
 
                   <div className="sm:col-span-2 sm:flex sm:justify-end">
-                    <button
+                    {/* <button
                       type="submit"
                       disabled={!formik.isValid}
                       className="mt-2 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto"
                     >
                       <Loader isLoading={loading} />
                       Proceed to checkout
-                    </button>
+                    </button> */}
+                    <PayPalButtons
+                        style={{ layout: "vertical" }}
+                        createOrder={createOrder}
+                        onApprove={onApprove}
+                    />
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
+
+       
       </div>
+
+
 
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -542,12 +599,7 @@ const SignUpForm = () => {
                                   </Dialog.Title>
                                 ))}
 
-                              <div className="mt-2">
-                                {/* <p className="text-sm text-gray-500">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Consequatur amet labore.
-                    </p> */}
-                              </div>
+                              <div className="mt-2"></div>
                             </div>
                           </div>
                           {/* <PayPalButton
@@ -628,7 +680,12 @@ const SignUpForm = () => {
                             }}
                             
                           /> */}
-                          <PayPalButton
+
+
+
+
+                          {/* ACTUAL WORKING BUTTON */}
+                          {/* <PayPalButton
                             createOrder={(data, actions) => {
                               return actions.order.create({
                                 purchase_units: [
@@ -702,17 +759,19 @@ const SignUpForm = () => {
                                     })
                                     .catch((err) => {
                                       console.log("ERROR WHILE CREATING CUSTOMER");
-                                    });
-    
-                                 
-                                  
+                                    }); 
                                 });
                             }}
 
                             options={{
                               clientId: "AalGkU6PM0G2dhULH_fqfBRGTZpu9Oel0wYXDGAk7uZ8tUY0IMz4a_XLBwCAZgZOUoF1eXNiKa8Ll0VG"
                             }}
-                          />
+                          /> */}
+
+                          {/* ACTUAL WORKING BUTTON */}
+
+
+                          
                         </>
                       ) : (
                         <>
@@ -773,3 +832,7 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
+
+// FOR TESTING
+// CLIENT_ID=
+// APP_SECRET=
