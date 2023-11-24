@@ -34,9 +34,9 @@ const HeavyDutyReport = () => {
         p3:'Premium'
       }}
       Price={{
-        price1: '49.99',
-        price2: '64.99',
-        price3: '79.99',
+        price1: '43.99',
+        price2: '33.99',
+        price3: '63.99',
       }}
       time={{
         t1:'12 24 hours',

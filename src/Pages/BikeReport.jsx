@@ -35,9 +35,9 @@ const BikeReport = () => {
         p3: "Premium",
       }}
       Price={{
-        price1: '39.99',
-        price2: '54.99',
-        price3: '67.99',
+        price1: '40.99',
+        price2: '30.99',
+        price3: '50.99',
       }}
       time={{
         t1:'12 24 hours',

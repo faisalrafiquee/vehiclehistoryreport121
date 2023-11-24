@@ -17,7 +17,7 @@ const About = () => {
       name: "Car Report",
       to: "/car-report",
       img:'assets/images/car-1.jpg',
-      desc:"How can the past of an American car be researched?"
+      desc:"How can the past of a car be researched?"
      
     },
     {
@@ -77,7 +77,7 @@ const About = () => {
                     GET THEIR INFORMATION?
                   </h2>
                   <p className="mt-4 text-lg text-gray-500">
-                    Thevinreport collects detailed vehicle information from U.S.
+                    Thevinreport collects detailed vehicle information from
                     government sources nationwide, giving you a comprehensive
                     historical record for your purchase.
                   </p>

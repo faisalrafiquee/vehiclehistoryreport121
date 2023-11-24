@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const SignUpForm = () => {
   const [open, setOpen] = useState(false);
@@ -32,10 +33,10 @@ const SignUpForm = () => {
       .create({
         purchase_units: [
           {
-            description: "Sunflower",
+            description: "Report",
             amount: {
               currency_code: "USD",
-              value: 20,
+              value: formik.values.package,
             },
           },
         ],
@@ -49,7 +50,53 @@ const SignUpForm = () => {
   // check Approval
   const onApprove = (data, actions) => {
     return actions.order.capture().then(function (details) {
-      const { payer } = details;
+      setModalLoader(1);
+
+      const { purchase_units, status, create_time, payer } = details;
+
+      const { amount, payee } = purchase_units[0];
+      const { name } = payer;
+
+      axios
+        .post(
+          "https://backend.thevinreport.com/api/create_customer.php",
+          formik.values
+        )
+        .then((res) => {
+          console.log(res.data.customer);
+          const { id } = res.data.customer;
+          let paypalPayload = {
+            customer_id: id,
+            p_id: details.id,
+            name: name.given_name + " " + name.surname,
+            status: status,
+            create_time: create_time,
+            currency_code: amount.currency_code,
+            amount: amount.value,
+            email_address: payee.email_address,
+            payer_id: payer.payer_id,
+          };
+          console.log(id);
+          axios
+            .post(
+              "https://backend.thevinreport.com/api/create_order.php",
+              paypalPayload
+            )
+            .then((res) => {
+              console.log(res.data);
+              setModalLoader(2);
+              setTimeout(() => {
+                navigate("/");
+              }, 2000);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log("ERROR WHILE CREATING CUSTOMER");
+        });
+
       setSuccess(true);
     });
   };
@@ -57,32 +104,11 @@ const SignUpForm = () => {
   //capture likely error
   const onError = (data, actions) => {
     setErrorMessage("An Error occured with your payment ");
+    toast.error("An Error occured with your payment ");
   };
-
-  useEffect(() => {
-    if (success) {
-      alert("Payment successful!!");
-      console.log("Order successful . Your order id is--", orderID);
-    }
-  }, [success]);
-
-
 
   const navigate = useNavigate();
-  const addPaypalScript = () => {
-    if (window.paypal) {
-      setScriptLoaded(true);
-      return;
-    }
-    const script = document.createElement("script");
-    script.src =
-      "https://www.paypal.com/sdk/js?client-id=AalGkU6PM0G2dhULH_fqfBRGTZpu9Oel0wYXDGAk7uZ8tUY0IMz4a_XLBwCAZgZOUoF1eXNiKa8Ll0VG&intent=authorize";
-    script.type = "text/javascript";
-    script.async = true;
-    script.onload = () => setScriptLoaded(true);
-    document.body.appendChild(script);
-    //EL1YZMVa6NZsa65Z-wrmC2bVWQdf1IzAzmUeEX-8z-aUcAKq2KQR4IwLWmcCZIoHAZJ_5ljfnAMSaA6W
-  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     // addPaypalScript();
@@ -93,55 +119,55 @@ const SignUpForm = () => {
   const pakages = [
     {
       id: 1,
-      amount: "46.99",
+      amount: "43.99",
       type: "car-report-prime",
       showType: "Prime",
     },
     {
       id: 2,
-      amount: "64.99",
+      amount: "33.99",
       type: "car-report-instant",
       showType: "Instant",
     },
     {
       id: 3,
-      amount: "79.99",
+      amount: "63.99",
       type: "car-report-premium",
       showType: "Premium",
     },
     {
       id: 4,
-      amount: "46.99",
+      amount: "43.99",
       type: "truck-report-standard",
       showType: "Standard",
     },
     {
       id: 5,
-      amount: "64.99",
+      amount: "33.99",
       type: "truck-report-instant",
       showType: "Instant",
     },
     {
       id: 6,
-      amount: "79.99",
+      amount: "63.99",
       type: "truck-report-premium",
       showType: "Premium",
     },
     {
       id: 7,
-      amount: "39.99",
+      amount: "40.99",
       type: "bike-report-mini",
       showType: "Mini",
     },
     {
       id: 8,
-      amount: "54.99",
+      amount: "30.99",
       type: "bike-report-instant",
       showType: "Instant",
     },
     {
       id: 9,
-      amount: "67.99",
+      amount: "50.99",
       type: "bike-report-premium",
       showType: "Premium",
     },
@@ -182,18 +208,6 @@ const SignUpForm = () => {
         setLoading(false);
         setOpen(true);
       }, 2000);
-      // await axios
-      // .post("/api/customer/add",values)
-      // .then((res) => {
-      //   if (res.status === 200) {
-      //     const { data } = res.data;
-      //     console.log(data);
-      //   }
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      //   toast.error("something went wrong!");
-      // });
     },
   });
 
@@ -511,30 +525,21 @@ const SignUpForm = () => {
                   </div>
 
                   <div className="sm:col-span-2 sm:flex sm:justify-end">
-                    {/* <button
+                    <button
                       type="submit"
                       disabled={!formik.isValid}
                       className="mt-2 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto"
                     >
                       <Loader isLoading={loading} />
                       Proceed to checkout
-                    </button> */}
-                    <PayPalButtons
-                        style={{ layout: "vertical" }}
-                        createOrder={createOrder}
-                        onApprove={onApprove}
-                    />
+                    </button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
-
-       
       </div>
-
-
 
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -576,251 +581,82 @@ const SignUpForm = () => {
                 style={{ minHeight: "300px", minWidth: "500px" }}
               >
                 <div className="mt-5 sm:mt-6">
-                  {scriptLoaded ? (
-                    <>
-                      {modalLoader === 0 ? (
-                        <>
-                          <div>
-                            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                  <>
+                    {modalLoader === 0 ? (
+                      <>
+                        <div>
+                          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                            <CheckIcon
+                              className="h-6 w-6 text-green-600"
+                              aria-hidden="true"
+                            />
+                          </div>
+                          <div className="mt-3 text-center sm:mt-5">
+                            {pakages
+                              .filter((e) => e.type === pakage)
+                              .map((p) => (
+                                <Dialog.Title
+                                  as="h3"
+                                  className="text-lg leading-6 font-medium text-gray-900"
+                                >
+                                  {p.showType} ${p.amount}
+                                </Dialog.Title>
+                              ))}
+
+                            <div className="mt-2"></div>
+                          </div>
+                        </div>
+                        <PayPalButtons
+                          style={{ layout: "vertical" }}
+                          createOrder={createOrder}
+                          onApprove={onApprove}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {modalLoader === 1 ? (
+                          <>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <PuffLoader
+                                color={"#000"}
+                                loading={true}
+                                size={150}
+                                aria-label="Loading Spinner"
+                                data-testid="loader"
+                              />
+                              <p>Please Wait...</p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
                               <CheckIcon
-                                className="h-6 w-6 text-green-600"
+                                className="h-8 w-8 text-green-600"
                                 aria-hidden="true"
                               />
                             </div>
-                            <div className="mt-3 text-center sm:mt-5">
-                              {pakages
-                                .filter((e) => e.type === pakage)
-                                .map((p) => (
-                                  <Dialog.Title
-                                    as="h3"
-                                    className="text-lg leading-6 font-medium text-gray-900"
-                                  >
-                                    {p.showType} ${p.amount}
-                                  </Dialog.Title>
-                                ))}
-
-                              <div className="mt-2"></div>
-                            </div>
-                          </div>
-                          {/* <PayPalButton
-                            amount={formik.values.package}
-                            // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                            onSuccess={(details, data) => {
-                              setModalLoader(1);
-
-                              const {
-                                purchase_units,
-                                status,
-                                create_time,
-                                payer,
-                              } = details;
-
-                              const { amount, payee } = purchase_units[0];
-                              const { name } = payer;
-
-                              axios
-                                .post(
-                                  "https://backend.thevinreport.com/api/create_customer.php",
-                                  formik.values
-                                )
-                                .then((res) => {
-                                  console.log(res.data.customer);
-                                  const { id } = res.data.customer;
-                                  let paypalPayload = {
-                                    customer_id: id,
-                                    p_id: details.id,
-                                    name: name.given_name + " " + name.surname,
-                                    status: status,
-                                    create_time: create_time,
-                                    currency_code: amount.currency_code,
-                                    amount: amount.value,
-                                    email_address: payee.email_address,
-                                    payer_id: payer.payer_id,
-                                  };
-                                  console.log(id);
-                                  axios
-                                    .post(
-                                      "https://backend.thevinreport.com/api/create_order.php",
-                                      paypalPayload
-                                    )
-                                    .then((res) => {
-                                      console.log(res.data);
-                                      setModalLoader(2);
-                                      setTimeout(()=>{
-                                        navigate('/')
-                                      },2000)
-
-                                    })
-                                    .catch((err) => {
-                                      console.log(err);
-                                    });
-                                })
-                                .catch((err) => {
-                                  console.log("ERROR WHILE CREATING CUSTOMER");
-                                });
-
-                              // alert("Transaction completed by " + details.payer.name.given_name);
-
-                              // // OPTIONAL: Call your server to save the transaction
-                              // return fetch("/paypal-transaction-complete", {
-                              //   method: "post",
-                              //   body: JSON.stringify({
-                              //     orderID: data.orderID
-                              //   })
-                              // });
-                            }}
-
-                            options={{
-                            
-                              clientId: "AalGkU6PM0G2dhULH_fqfBRGTZpu9Oel0wYXDGAk7uZ8tUY0IMz4a_XLBwCAZgZOUoF1eXNiKa8Ll0VG"
-                            }}
-
-                            onApprove={(data,actions)=>{
-                              console.log(data)
-                            }}
-                            
-                          /> */}
-
-
-
-
-                          {/* ACTUAL WORKING BUTTON */}
-                          {/* <PayPalButton
-                            createOrder={(data, actions) => {
-                              return actions.order.create({
-                                purchase_units: [
-                                  {
-                                    amount: {
-                                      currency_code: "USD",
-                                      value: formik.values.package,
-                                    },
-                                  },
-                                ],
-                                // application_context: {
-                                //   shipping_preference: "NO_SHIPPING" // default is "GET_FROM_FILE"
-                                // }
-                              });
-                            }}
-                            onApprove={(actions) => {
-                              // Capture the funds from the transaction
-                              return actions.order
-                                .capture()
-                                .then(function (details) {
-                                  console.log(details);
-
-                                  setModalLoader(1);
-
-                                  const {
-                                    purchase_units,
-                                    status,
-                                    create_time,
-                                    payer,
-                                  } = details;
-    
-                                  const { amount, payee } = purchase_units[0];
-                                  const { name } = payer;
-    
-                                  axios
-                                    .post(
-                                      "https://backend.thevinreport.com/api/create_customer.php",
-                                      formik.values
-                                    )
-                                    .then((res) => {
-                                      console.log(res.data.customer);
-                                      const { id } = res.data.customer;
-                                      let paypalPayload = {
-                                        customer_id: id,
-                                        p_id: details.id,
-                                        name: name.given_name + " " + name.surname,
-                                        status: status,
-                                        create_time: create_time,
-                                        currency_code: amount.currency_code,
-                                        amount: amount.value,
-                                        email_address: payee.email_address,
-                                        payer_id: payer.payer_id,
-                                      };
-                                      console.log(id);
-                                      axios
-                                        .post(
-                                          "https://backend.thevinreport.com/api/create_order.php",
-                                          paypalPayload
-                                        )
-                                        .then((res) => {
-                                          console.log(res.data);
-                                          setModalLoader(2);
-                                          setTimeout(()=>{
-                                            navigate('/')
-                                          },2000)
-    
-                                        })
-                                        .catch((err) => {
-                                          console.log(err);
-                                        });
-                                    })
-                                    .catch((err) => {
-                                      console.log("ERROR WHILE CREATING CUSTOMER");
-                                    }); 
-                                });
-                            }}
-
-                            options={{
-                              clientId: "AalGkU6PM0G2dhULH_fqfBRGTZpu9Oel0wYXDGAk7uZ8tUY0IMz4a_XLBwCAZgZOUoF1eXNiKa8Ll0VG"
-                            }}
-                          /> */}
-
-                          {/* ACTUAL WORKING BUTTON */}
-
-
-                          
-                        </>
-                      ) : (
-                        <>
-                          {modalLoader === 1 ? (
-                            <>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  flexDirection: "column",
-                                }}
-                              >
-                                <PuffLoader
-                                  color={"#000"}
-                                  loading={true}
-                                  size={150}
-                                  aria-label="Loading Spinner"
-                                  data-testid="loader"
-                                />
-                                <p>Please Wait...</p>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
-                                <CheckIcon
-                                  className="h-8 w-8 text-green-600"
-                                  aria-hidden="true"
-                                />
-                              </div>
-                              <p
-                                style={{
-                                  textAlign: "center",
-                                  fontSize: 22,
-                                  marginTop: 20,
-                                }}
-                              >
-                                Your order has been placed successfully.{" "}
-                                <b>The report will be sent to you soon.</b>
-                              </p>
-                            </>
-                          )}
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <></>
-                  )}
+                            <p
+                              style={{
+                                textAlign: "center",
+                                fontSize: 22,
+                                marginTop: 20,
+                              }}
+                            >
+                              Your order has been placed successfully.{" "}
+                              <b>The report will be sent to you soon.</b>
+                            </p>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </>
                 </div>
               </div>
             </Transition.Child>

@@ -21,7 +21,7 @@ const CarReport = () => {
     <InnerHero
         id={1}
         title="Always get a car examined before purchasing it."
-        description="How can I verify the history of a car imported from the United States? thevinreport.com is the most dependable company for gathering correct information on cars by VIN for a fixed charge and providing a thorough report. Simple, quick, and, most importantly, effective."
+        description="How can I verify the history of a car imported from the United States/Canada? thevinreport.com is the most dependable company for gathering correct information on cars by VIN for a fixed charge and providing a thorough report. Simple, quick, and, most importantly, effective."
         link="hahha"
         btnTitle="Get Report"
         imgPath={'assets/images/car-1.jpg'}
@@ -35,9 +35,9 @@ const CarReport = () => {
           p3:'Premium'
         }}
         Price={{
-          price1: '46.99',
-          price2: '64.99',
-          price3: '79.99',
+          price1: '43.99',
+          price2: '33.99',
+          price3: '63.99',
         }}
         time={{
           t1:'12 24 hours',

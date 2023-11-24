@@ -10,7 +10,8 @@ import SignUpForm from "./Pages/SignUpForm";
 import Contact from "./Pages/Contact";
 import About from "./Pages/About";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-
+//production  AalGkU6PM0G2dhULH_fqfBRGTZpu9Oel0wYXDGAk7uZ8tUY0IMz4a_XLBwCAZgZOUoF1eXNiKa8Ll0VG
+//sandbox AUHBx6LBvzXP613OiWpnM96i66nTR32-9o-NTAAQ9PAAdIHyTTXzEFhJYkZc9r8h7x7CbbXIu4cmpn0f
 const App = () => {
   return (
     <>

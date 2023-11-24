@@ -345,7 +345,7 @@ const Home = () => {
             <Pricing
               title={"Car Report"}
               type={"Instant"}
-              price={"$64.99"}
+              price={"$33.99"}
               time={"in 30 Minutes"}
               decription={""}
               btnName={"Buy Now"}
@@ -360,7 +360,7 @@ const Home = () => {
             <Pricing
               title={"Heavy-duty vehicles"}
               type={"Instant"}
-              price={"$64.99"}
+              price={"$33.99"}
               time={"in 30 Minutes"}
               decription={""}
               btnName={"Buy Now"}
@@ -375,7 +375,7 @@ const Home = () => {
             <Pricing
               title={"Motor Bikes Report"}
               type={"Instant"}
-              price={"$54.99"}
+              price={"$30.99"}
               time={"in 30 Minutes"}
               decription={""}
               btnName={"Buy Now"}
