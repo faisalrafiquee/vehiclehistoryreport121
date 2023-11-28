@@ -369,8 +369,7 @@ const SignUpForm = () => {
                       aria-hidden="true"
                     />
                     <span className="ml-3">
-                      Thevinreport is trusted by over 100,000 people across 50+
-                      countries in the United states.
+                      Thevinreport is trusted by over 100,000 people across United states & Canada.
                     </span>
                   </dd>
                 </dl>
